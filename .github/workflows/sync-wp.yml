@@ -17,18 +17,19 @@ jobs:
     - name: Set Repository Names
       run: |
         echo "SRC_REPO=${SRC_REPO:-WordPress/WordPress}" >> $GITHUB_ENV
-        echo "DST_REPO=${DST_REPO:-WebPublishOrg/WP}" >> $GITHUB_ENV
+        echo "DST_ORG=${DST_ORG:-WebPublishOrg}" >> $GITHUB_ENV
+        echo "DST_REPO=${DST_REPO:-WP}" >> $GITHUB_ENV
 
     - name: Create Fork if Missing
       env:
         GH_TOKEN: ${{ secrets.BOT_TOKEN }}
       run: |
         if ! gh repo view $DST_REPO > /dev/null 2>&1; then
-          gh repo fork $SRC_REPO --clone=false --fork-name $DST_REPO
+          gh repo fork $SRC_REPO --clone=false --org $DST_ORG --fork-name $DST_REPO
           echo "Fork created."
         fi
 
     - name: Sync WordPress Fork
       env:
         GH_TOKEN: ${{ secrets.BOT_TOKEN }}
-      run: gh repo sync $DST_REPO --force
+      run: gh repo sync $DST_ORG/$DST_REPO --force

@@ -1,4 +1,4 @@
-name: Ensure WP Fork Exists and Sync
+name: Fork or Sync WP
 
 on:
   push:

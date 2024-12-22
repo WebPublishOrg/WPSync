@@ -31,7 +31,7 @@ jobs:
           echo "Fork already exists."
         fi
 
-    - name: Fetch and Push All Branches and Tags
+    - name: Fetch and Push All Branches
       env:
         BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
       run: |
@@ -40,7 +40,7 @@ jobs:
         git remote add upstream https://github.com/$SRC_REPO.git
         git fetch upstream
         git remote set-url origin https://x-access-token:${{ secrets.BOT_TOKEN }}@github.com/$DST_ORG/$DST_REPO.git
-        for branch in $(git branch -r | grep 'upstream/' | grep -v 'HEAD' | sed 's|upstream/||'); do
+        for branch in $(git branch -r | grep 'upstream/' | grep -v 'HEAD' | grep -v 'tags/' | sed 's|upstream/||'); do
           if git show-ref --verify --quiet refs/heads/$branch; then
             git checkout $branch
           else

@@ -33,14 +33,13 @@ jobs:
 
     - name: Fetch and Push All Branches and Tags
       env:
-        GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}
+        BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
       run: |
-        git config --global user.email "actions@github.com"
-        git config --global user.name "GitHub Actions"
         git clone https://github.com/$DST_ORG/$DST_REPO.git
         cd $DST_REPO
         git remote add upstream https://github.com/$SRC_REPO.git
-        git fetch upstream --tags
+        git fetch upstream --
+        git remote set-url origin https://x-access-token:${{ secrets.BOT_TOKEN }}@github.com/$DST_ORG/$DST_REPO.git
         for branch in $(git branch -r | grep 'upstream/' | grep -v 'HEAD' | sed 's|upstream/||'); do
           git checkout -b $branch upstream/$branch || git checkout $branch
           git push origin $branch --force

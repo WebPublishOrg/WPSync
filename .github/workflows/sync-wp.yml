@@ -21,21 +21,17 @@ jobs:
         echo "DST_REPO=${DST_REPO:-WP}" >> $GITHUB_ENV
 
     - name: Create Fork if Missing
-      id: create_fork
       env:
         GH_TOKEN: ${{ secrets.BOT_TOKEN }}
       run: |
         if ! gh repo view $DST_ORG/$DST_REPO > /dev/null 2>&1; then
           gh repo fork $SRC_REPO --clone=false --org $DST_ORG --fork-name $DST_REPO
           echo "Fork created."
-          echo "::set-output name=fork_created::true"
         else
           echo "Fork already exists."
-          echo "::set-output name=fork_created::false"
         fi
 
     - name: Fetch and Push All Branches
-      if: steps.create_fork.outputs.fork_created == 'false'
       env:
         BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
       run: |
@@ -54,7 +50,6 @@ jobs:
         done
 
     - name: Fetch and Push All Tags
-      if: steps.create_fork.outputs.fork_created == 'false'
       env:
         BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
       run: |

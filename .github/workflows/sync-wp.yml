@@ -24,7 +24,7 @@ jobs:
       env:
         GH_TOKEN: ${{ secrets.BOT_TOKEN }}
       run: |
-        if ! gh repo view $DST_REPO > /dev/null 2>&1; then
+        if ! gh repo view $DST_ORG/$DST_REPO > /dev/null 2>&1; then
           gh repo fork $SRC_REPO --clone=false --org $DST_ORG --fork-name $DST_REPO
           echo "Fork created."
         fi

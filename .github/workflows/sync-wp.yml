@@ -21,6 +21,7 @@ jobs:
         echo "DST_REPO=${DST_REPO:-WP}" >> $GITHUB_ENV
 
     - name: Create Fork if Missing
+      id: create_fork
       env:
         GH_TOKEN: ${{ secrets.BOT_TOKEN }}
       run: |
@@ -33,6 +34,7 @@ jobs:
         fi
 
     - name: Fetch and Push All Branches
+      if: steps.create_fork.outputs.fork_created == 'false'
       env:
         BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
       run: |
@@ -51,6 +53,7 @@ jobs:
         done
 
     - name: Fetch and Push All Tags
+      if: steps.create_fork.outputs.fork_created == 'false'
       env:
         BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
       run: |

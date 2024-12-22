@@ -46,7 +46,7 @@ jobs:
           else
             git checkout -b $branch upstream/$branch
           fi
-          git push origin $branch --force
+          git push origin refs/heads/$branch --force
         done
 
     - name: Fetch and Push All Tags

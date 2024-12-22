@@ -33,7 +33,7 @@ jobs:
 
     - name: Fetch and Push All Branches and Tags
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}
       run: |
         git clone https://github.com/$DST_ORG/$DST_REPO.git
         cd $DST_REPO

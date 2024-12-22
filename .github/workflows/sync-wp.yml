@@ -27,9 +27,20 @@ jobs:
         if ! gh repo view $DST_ORG/$DST_REPO > /dev/null 2>&1; then
           gh repo fork $SRC_REPO --clone=false --org $DST_ORG --fork-name $DST_REPO
           echo "Fork created."
+        else
+          echo "Fork already exists."
         fi
 
-    - name: Sync WordPress Fork
+    - name: Fetch and Push All Branches and Tags
       env:
         GH_TOKEN: ${{ secrets.BOT_TOKEN }}
-      run: gh repo sync $DST_ORG/$DST_REPO --force
+      run: |
+        git clone https://github.com/$DST_ORG/$DST_REPO.git
+        cd $DST_REPO
+        git remote add upstream https://github.com/$SRC_REPO.git
+        git fetch upstream --tags
+        for branch in $(git branch -r | grep 'upstream/' | grep -v 'HEAD' | sed 's|upstream/||'); do
+          git checkout -b $branch upstream/$branch || git checkout $branch
+          git push origin $branch --force
+        done
+        git push origin --tags --force

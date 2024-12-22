@@ -23,8 +23,6 @@ jobs:
         gh auth logout --hostname github.com || true
 
     - name: Authenticate with GitHub CLI
-      env:
-        GH_TOKEN: ${{ secrets.BOT_TOKEN }}
       run: |
         echo "${{ secrets.BOT_TOKEN }}" | gh auth login --with-token
         gh auth status

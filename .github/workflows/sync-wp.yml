@@ -15,6 +15,10 @@ jobs:
         echo "SRC_REPO=${SRC_REPO:-WordPress/WordPress}" >> $GITHUB_ENV
         echo "DST_REPO=${DST_REPO:-WP}" >> $GITHUB_ENV
 
+    - name: Clear Existing GitHub CLI Credentials
+      run: |
+        gh auth logout --hostname github.com || true
+
     - name: Authenticate with GitHub CLI
       env:
         GH_TOKEN: ${{ secrets.BOT_TOKEN }}

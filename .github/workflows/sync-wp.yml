@@ -28,9 +28,10 @@ jobs:
         if ! gh repo view $DST_ORG/$DST_REPO > /dev/null 2>&1; then
           gh repo fork $SRC_REPO --clone=false --org $DST_ORG --fork-name $DST_REPO
           echo "Fork created."
-          exit 0
+          echo "::set-output name=fork_created::true"
         else
           echo "Fork already exists."
+          echo "::set-output name=fork_created::false"
         fi
 
     - name: Fetch and Push All Branches

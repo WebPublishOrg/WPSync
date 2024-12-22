@@ -17,7 +17,7 @@ jobs:
     - name: Set Repository Names
       run: |
         echo "SRC_REPO=${SRC_REPO:-WordPress/WordPress}" >> $GITHUB_ENV
-        echo "DST_REPO=${DST_REPO:-WP}" >> $GITHUB_ENV
+        echo "DST_REPO=${DST_REPO:-WebPublishOrg/WP}" >> $GITHUB_ENV
 
     - name: Create Fork if Missing
       env:

@@ -35,6 +35,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}
       run: |
+        git config --global user.email "actions@github.com"
+        git config --global user.name "GitHub Actions"
         git clone https://github.com/$DST_ORG/$DST_REPO.git
         cd $DST_REPO
         git remote add upstream https://github.com/$SRC_REPO.git

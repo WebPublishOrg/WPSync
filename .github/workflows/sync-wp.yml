@@ -19,18 +19,9 @@ jobs:
         echo "SRC_REPO=${SRC_REPO:-WordPress/WordPress}" >> $GITHUB_ENV
         echo "DST_REPO=${DST_REPO:-WP}" >> $GITHUB_ENV
 
-    - name: Clear Existing GitHub CLI Credentials
-      run: |
-        gh auth logout --hostname github.com || true
-
-    - name: Authenticate with GitHub CLI
+    - name: Create Fork if Missing
       env:
         GH_TOKEN: ${{ secrets.BOT_TOKEN }}
-      run: |
-        gh auth login --with-token
-        gh auth status
-
-    - name: Create Fork if Missing
       run: |
         if ! gh repo view $DST_REPO > /dev/null 2>&1; then
           gh repo fork $SRC_REPO --clone=false --fork-name $DST_REPO --include-branches
@@ -38,4 +29,6 @@ jobs:
         fi
 
     - name: Sync WordPress Fork
+      env:
+        GH_TOKEN: ${{ secrets.BOT_TOKEN }}
       run: gh repo sync $DST_REPO --force
